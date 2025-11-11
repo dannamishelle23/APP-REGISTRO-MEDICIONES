@@ -21,17 +21,17 @@ export class LoginPage {
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    rol: ['', [Validators.required]] //Rol del usuario
   });
 
   async onLogin() {
     this.resetMessages();
     if (this.form.invalid) return;
     this.loading.set(true);
-    const { email, password } = this.form.value;
-
+    const { email, password} = this.form.value;
     try {
-      await this.supa.signIn(email!, password!);
+      await this.supa.signIn(email!, password!, rol!);
       await this.router.navigateByUrl('/home', { replaceUrl: true });
     } catch (err: any) {
       this.errorMsg.set(err.message ?? 'Error al iniciar sesión');

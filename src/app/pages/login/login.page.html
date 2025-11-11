@@ -1,13 +1,48 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title>Iniciar Sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">login</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <form [formGroup]="form" (ngSubmit)="onLogin()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Correo electrónico</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Contraseña</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+
+      <ion-item>
+      <ion-label position="stacked">Rol</ion-label>
+      <ion-select formControlName="rol" interface="alert" placeholder="Selecciona un rol">
+        <ion-select-option value="admin">Administrador</ion-select-option>
+        <ion-select-option value="medidor">Medidor</ion-select-option>
+      </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" type="submit" [disabled]="loading() || form.invalid">
+      <ion-spinner *ngIf="loading()" name="dots"></ion-spinner>
+      <span *ngIf="!loading()">Ingresar</span>
+    </ion-button>
+
+    <ion-button fill="clear" expand="block" (click)="onRegister()" [disabled]="loading()">
+      Crear nueva cuenta
+    </ion-button>
+
+    <ion-text color="danger" *ngIf="errorMsg()">
+      <p class="ion-text-center">{{ errorMsg() }}</p>
+    </ion-text>
+
+    <ion-text color="success" *ngIf="infoMsg()">
+      <p class="ion-text-center">{{ infoMsg() }}</p>
+    </ion-text>
+  </form>
+
 </ion-content>

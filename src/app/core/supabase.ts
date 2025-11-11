@@ -31,9 +31,22 @@ get client() {
     return data;
   }
 
-  async signUp(email: string, password: string) {
-    const { data, error } = await this.supabase.auth.signUp({ email, password });
+  async signUp(email: string, password: string, rol: string) {
+    const { data, error } = await this.supabase.auth.signUp({ 
+        email, 
+        password,
+        options: {
+            data: {rol}
+        } });
     if (error) throw error;
+
+    const { user } = data;
+    if (user) {
+        const { error: insertError } = await this.supabase
+        .from('usuarios')
+        .insert([{ id: user.id, email, rol }]);
+        if (insertError) throw insertError;
+    }
     return data;
   }
 
